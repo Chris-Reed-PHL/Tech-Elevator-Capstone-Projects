@@ -31,7 +31,7 @@ public class Menu {
 		try {
 			int selectedOption = Integer.valueOf(userInput);
 			if (selectedOption > 0 && selectedOption <= options.length) {
-				choice = options[selectedOption - 1];
+				choice = options[selectedOption - 1];//because zero based
 			}
 		} catch (NumberFormatException e) {
 			// eat the exception, an error message will be displayed below since choice will be null
