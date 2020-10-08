@@ -1,6 +1,10 @@
 package com.techelevator;
-
+import com.techelevator.VendoInventory;
 import com.techelevator.view.Menu;
+
+import java.math.BigDecimal;
+
+import com.techelevator.MainInventory;
 
 public class VendingMachineCLI {
 
@@ -9,6 +13,18 @@ public class VendingMachineCLI {
 	private static final String MAIN_MENU_OPTION_EXIT = "Exit";
 	private static final String[] MAIN_MENU_OPTIONS = { MAIN_MENU_OPTION_DISPLAY_ITEMS, MAIN_MENU_OPTION_PURCHASE, MAIN_MENU_OPTION_EXIT };
 
+	
+	private static final String PURCHASE_MENU_OPTION_FEED_MONEY = "Feed Money";
+	private static final String PURCHASE_MENU_OPTION_SELECT_PRODUCT = "Select Product";
+	private static final String PURCHASE_MENU_OPTION_FINISH_TRANSACTION = "Finish Transaction";
+	private static final String[] PURCHASE_MENU_OPTIONS = { PURCHASE_MENU_OPTION_FEED_MONEY, PURCHASE_MENU_OPTION_SELECT_PRODUCT, PURCHASE_MENU_OPTION_FINISH_TRANSACTION };
+	
+	private static final String FEED_OPTION_1 = "add $1";
+	private static final String FEED_OPTION_2 = "add $2";
+	private static final String FEED_OPTION_3 = "add $5";
+	private static final String FEED_OPTION_4 = "add $10";
+	private static final String[] FEED_MENU_OPTIONS = { FEED_OPTION_1, FEED_OPTION_2, FEED_OPTION_3, FEED_OPTION_4};
+	
 	private Menu menu;
 
 	public VendingMachineCLI(Menu menu) {
@@ -21,7 +37,7 @@ public class VendingMachineCLI {
 
 			if (choice.equals(MAIN_MENU_OPTION_DISPLAY_ITEMS)) {
 				// display vending machine items
-			
+		//	VendoInventory.getInventoryMap());
 				
 			} else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
 				// do purchase

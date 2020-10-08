@@ -11,9 +11,14 @@ import java.util.Scanner;
 
 public class VendoInventory {
 	
-	private String path = "vendingmachine.csv";
+	private  String path = "vendingmachine.csv";
 	
-	public List<String> createInventoryList() {
+	public VendoInventory(String path) {
+		
+		this.path = path;
+	}
+	
+	public  List<String> createInventoryList() {
 		List<String> lines = new ArrayList<String>();
 		File fileToStockFrom = new File(path);
 		
@@ -25,6 +30,28 @@ public class VendoInventory {
 			System.out.println("File Not Found: " + e);
 		}	
 		return lines;
+	}
+	
+	//public List<String [] > createInventoryArray(){
+//		
+//		List<String []> inventoryList = new ArrayList<String []>();
+//		
+//			for(String line : createInventoryList()){
+//				inventoryList.add(line.split("\\|"));
+//			}
+//		
+//		return inventoryList;
+//		
+//		
+//	}
+	
+	public Map<String, Selection> getInventoryMap(){
+		List<String> lines = createInventoryList();
+		
+		
+		return createInventoryMap(lines);
+		
+		
 	}
 	
 	public Map<String, Selection> createInventoryMap(List<String> lines) {
