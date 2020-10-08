@@ -4,8 +4,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.Scanner;
-//Hey Miranda!
-//Whaddup Chris (O:
+
 public class Menu {
 
 	private PrintWriter out;
