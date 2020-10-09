@@ -5,13 +5,10 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
-import com.techelevator.VendoInventory;
-
 public class Menu {
 
 	private PrintWriter out;
 	private Scanner in;
-//	private VendoInventory inventory =  new VendoInventory(fileToStockFrom);
 	
 	public Menu(InputStream input, OutputStream output) {
 		this.out = new PrintWriter(output);
@@ -54,13 +51,6 @@ public class Menu {
 		out.flush();
 	}
 	
-//	public void displayInventory(){
-//		
-//		for(String line : inventory.createInventoryList()) {
-//			
-//		}
-	
-
 }
 
 	

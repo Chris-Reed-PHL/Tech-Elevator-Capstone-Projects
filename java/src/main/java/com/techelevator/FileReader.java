@@ -9,16 +9,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-public class VendoInventory {
+public class FileReader {
 	
-	private  String path = "vendingmachine.csv";
+private  String path = "vendingmachine.csv";
 	
-	public VendoInventory(String path) {
-		
+	public FileReader(String path) {
 		this.path = path;
 	}
 	
-	public  List<String> createInventoryList() {
+	public Map<String, Selection> createInventoryMap(){
+		List<String> lines = getMapInfo();
+		return populateInventoryMap(lines);
+	}
+	
+	public  List<String> getMapInfo() {
 		List<String> lines = new ArrayList<String>();
 		File fileToStockFrom = new File(path);
 		
@@ -32,32 +36,15 @@ public class VendoInventory {
 		return lines;
 	}
 	
-	//public List<String [] > createInventoryArray(){
-//		
-//		List<String []> inventoryList = new ArrayList<String []>();
-//		
-//			for(String line : createInventoryList()){
-//				inventoryList.add(line.split("\\|"));
-//			}
-//		
-//		return inventoryList;
-//		
-//		
-//	}
-	
-	public Map<String, Selection> getInventoryMap(){
-		List<String> lines = createInventoryList();
-		
-		
-		return createInventoryMap(lines);
-		
-		
-	}
-	
-	public Map<String, Selection> createInventoryMap(List<String> lines) {
+	public Map<String, Selection> populateInventoryMap(List<String> lines) {
 		Map<String, Selection> inventoryMap = new HashMap<String, Selection>();
 		
 		for (String line : lines) {
+			
+			if(line == null) {
+				continue;
+			}
+			
 			String[] itemInfo = line.split("\\|");
 			
 			if(itemInfo[3].equals("Candy")) {
@@ -80,5 +67,5 @@ public class VendoInventory {
 		
 		return inventoryMap;	
 	}
-	
+
 }

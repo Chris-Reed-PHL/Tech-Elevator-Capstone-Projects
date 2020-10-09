@@ -7,7 +7,7 @@ public abstract class Item {
 	private String name;
 	private BigDecimal price;
 	
-	public Item(String name, BigDecimal price) {
+	public Item(String name, BigDecimal price) { //constructor
 		
 		this.name = name;
 		this.price = price;
@@ -23,6 +23,6 @@ public abstract class Item {
 	}
 	
 	
-	public abstract String getSound();
+	public abstract String getSound(); //each product has its own method for getSound()
 	
 }
