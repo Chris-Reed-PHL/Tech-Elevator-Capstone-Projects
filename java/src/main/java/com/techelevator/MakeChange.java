@@ -55,8 +55,6 @@ public class MakeChange {
 		currentBalance -= cost.doubleValue();
 		machineBalance = new BigDecimal(currentBalance).setScale(2, RoundingMode.HALF_UP);
 		return machineBalance;
-		
-		
 	}
 
 }
