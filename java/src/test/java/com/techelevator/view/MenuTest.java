@@ -29,7 +29,7 @@ public class MenuTest {
 		menu.getChoiceFromOptions(options);
 
 		String expected = "\n" + "1) " + options[0].toString() + "\n" + "2) " + options[1].toString() + "\n" + "3) "
-				+ options[2].toString() + "\n\n" + "Please choose an option >>> ";
+				+ options[2].toString() + "\r\n" + "Please choose an option >>> ";
 		Assert.assertEquals(expected, output.toString());
 	}
 

@@ -12,11 +12,6 @@ public class VendingMachineCLI {
 	private static final String MAIN_MENU_OPTION_EXIT = "Exit";
 	private static final String[] MAIN_MENU_OPTIONS = { MAIN_MENU_OPTION_DISPLAY_ITEMS, MAIN_MENU_OPTION_PURCHASE, MAIN_MENU_OPTION_EXIT };
 
-	private static final String PURCHASE_MENU_OPTION_FEED_MONEY = "Feed Money";
-	private static final String PURCHASE_MENU_OPTION_SELECT_PRODUCT = "Select Product";
-	private static final String PURCHASE_MENU_OPTION_FINISH_TRANSACTION = "Finish Transaction";
-	private static final String[] PURCHASE_MENU_OPTIONS = { PURCHASE_MENU_OPTION_FEED_MONEY, PURCHASE_MENU_OPTION_SELECT_PRODUCT, PURCHASE_MENU_OPTION_FINISH_TRANSACTION };
-
 	private static final String FEED_OPTION_1 = "add $1";
 	private static final String FEED_OPTION_2 = "add $2";
 	private static final String FEED_OPTION_3 = "add $5";
@@ -46,8 +41,8 @@ public class VendingMachineCLI {
 			} else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
 				// display purchase menu
 				while(true) { //too nested??
-					choice = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
-					if (choice.equals(PURCHASE_MENU_OPTION_FEED_MONEY)) {
+					choice = (String) menu.getToPurchaseMenu();
+					if (choice.equals(menu.getPurchaseMenuOptionFeedMoney())) {
 						//display feed menu
 						choice = (String) menu.getChoiceFromOptions(FEED_MENU_OPTIONS);
 						if (choice.equals(FEED_OPTION_1)) {
@@ -64,14 +59,14 @@ public class VendingMachineCLI {
 							makechange.addMoney(10.00);
 						}
 						System.out.println("Current Money Provided: $" + makechange.getMachineBalance());
-					} else if (choice.equals(PURCHASE_MENU_OPTION_SELECT_PRODUCT)) {
+					} else if (choice.equals(menu.getPurchaseMenuOptionSelectProduct())) {
 						FileReader options = new FileReader("vendingmachine.csv");
 						choice = (String) menu.getChoiceFromPurchaseOptions(options.createInventoryMap());
-						 System.out.println("Your remaining balance is $" + makechange.subtractCost(options.createInventoryMap().get(choice).getItem().getPrice()));
-					} else if (choice.equals(PURCHASE_MENU_OPTION_FINISH_TRANSACTION)) {
+						System.out.println("Your remaining balance is $" + makechange.subtractCost(options.createInventoryMap().get(choice).getItem().getPrice()));
+					} else if (choice.equals(menu.getPurchaseMenuOptionFinishTransaction())) {
 						//change dispenses, balance returns to zero
 						System.out.println(makechange.dispenseChange(makechange.getCurrentBalance()));
-						System.out.println("Current Money Provided: $" + makechange.getMachineBalance());
+						System.out.println("Current Money Provided: $" + makechange.clearMachineBalance(makechange.getCurrentBalance()));
 						break;
 					}
 				}

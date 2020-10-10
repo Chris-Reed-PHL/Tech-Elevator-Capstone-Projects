@@ -6,7 +6,7 @@ public class Selection { //this class stocks items to max every time
 	private String name;
 	private int stock;
 	private Item item;
-	private int dispenseAmount = 0;
+//	private int dispenseAmount = 0;
 	
 	public Selection(String name, Item item) { //create a selection object
 		this.name = name;
@@ -14,10 +14,10 @@ public class Selection { //this class stocks items to max every time
 		this.item = item;
 	}
 	
-	public void dispenseItem() { //dispense item if there is enough stock
+	public void dispenseItem(int stock) { //dispense item if there is enough stock
 		if (stock > 0) {
-			stock--;
-			dispenseAmount++;
+			stock = stock--;
+//			dispenseAmount++;
 		}
 	}
 	
@@ -33,12 +33,12 @@ public class Selection { //this class stocks items to max every time
 		return item;
 	}
 	
-	public int getDispenseAmount() {
-		return dispenseAmount;
-	}
+//	public int getDispenseAmount() {
+//		return dispenseAmount;
+//	}
 	
-	public void resetDispenseAmount() {
-		dispenseAmount = 0;
-	}
+//	public void resetDispenseAmount() {
+//		dispenseAmount = 0;
+//	}
 	
 }
