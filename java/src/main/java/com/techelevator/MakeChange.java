@@ -51,5 +51,12 @@ public class MakeChange {
 		return "Your change is: " + nickels + " nickel(s), " + dimes + " dime(s), and " + quarters + " quarter(s).";
 	}
 	
+	public BigDecimal subtractCost(BigDecimal cost) {
+		currentBalance -= cost.doubleValue();
+		machineBalance = new BigDecimal(currentBalance).setScale(2, RoundingMode.HALF_UP);
+		return machineBalance;
+		
+		
+	}
 
 }
