@@ -16,7 +16,7 @@ public class Selection { //this class stocks items to max every time
 	
 	public void dispenseItem(int stock) { //dispense item if there is enough stock
 		if (stock > 0) {
-			stock = stock--;
+			this.stock--;
 //			dispenseAmount++;
 		}
 	}
