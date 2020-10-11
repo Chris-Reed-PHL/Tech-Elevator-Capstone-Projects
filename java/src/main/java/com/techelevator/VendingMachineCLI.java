@@ -3,6 +3,7 @@ import com.techelevator.view.Menu;
 import com.techelevator.MakeChange;
 import com.techelevator.Selection;
 import java.util.Map;
+import com.techelevator.MainInventory;
 
 
 public class VendingMachineCLI {
@@ -20,23 +21,23 @@ public class VendingMachineCLI {
 
 	private Menu menu;
 	private MakeChange makechange = new MakeChange();
+	private MainInventory inventory = new MainInventory();
 
 
-	public VendingMachineCLI(Menu menu, MakeChange makechange) {
+	public VendingMachineCLI(Menu menu, MakeChange makechange, MainInventory inventory) {
 		this.menu = menu;
 		this.makechange = makechange;
+		this.inventory = inventory;
 
 	}
 
 	public void run() {
 		while (true) {
 			String choice = (String) menu.getChoiceFromOptions(MAIN_MENU_OPTIONS);
-
 			if (choice.equals(MAIN_MENU_OPTION_DISPLAY_ITEMS)) {
 				// display vending machine items
-				FileReader options = new FileReader("vendingmachine.csv");
-				for(Map.Entry<String, Selection> option : options.createInventoryMap().entrySet()) {
-					System.out.println(option.getKey() + " " + option.getValue().getItem().getName() + " $" + option.getValue().getItem().getPrice() + " Quantity Remaining:" + option.getValue().getStock());
+				for(Map.Entry<String, Selection> option : inventory.getInventoryMap().entrySet()) {
+					System.out.println(option.getKey() + " " + option.getValue().getItem().getName() + " $" + option.getValue().getItem().getPrice() + " Quantity Remaining:" + option.getValue().getItem().getStock());
 				}
 			} else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
 				// display purchase menu
@@ -60,9 +61,8 @@ public class VendingMachineCLI {
 						}
 						System.out.println("Current Money Provided: $" + makechange.getMachineBalance());
 					} else if (choice.equals(menu.getPurchaseMenuOptionSelectProduct())) {
-						FileReader options = new FileReader("vendingmachine.csv");
-						choice = (String) menu.getChoiceFromPurchaseOptions(options.createInventoryMap());
-						System.out.println("Your remaining balance is $" + makechange.subtractCost(options.createInventoryMap().get(choice).getItem().getPrice()));
+						choice = (String) menu.getChoiceFromPurchaseOptions(inventory.getInventoryMap());
+						System.out.println("Your remaining balance is $" + makechange.subtractCost(inventory.getInventoryMap().get(choice).getItem().getPrice()));
 					} else if (choice.equals(menu.getPurchaseMenuOptionFinishTransaction())) {
 						//change dispenses, balance returns to zero
 						System.out.println(makechange.dispenseChange(makechange.getCurrentBalance()));
@@ -80,7 +80,9 @@ public class VendingMachineCLI {
 	public static void main(String[] args) {
 		Menu menu = new Menu(System.in, System.out);
 		MakeChange makechange = new MakeChange();
-		VendingMachineCLI cli = new VendingMachineCLI(menu, makechange);
+		MainInventory inventory = new MainInventory();
+		VendingMachineCLI cli = new VendingMachineCLI(menu, makechange, inventory);
+		inventory.stockInventory();
 		cli.run();
 	}
 }

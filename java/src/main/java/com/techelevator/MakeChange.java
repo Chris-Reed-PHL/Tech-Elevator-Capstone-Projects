@@ -58,7 +58,6 @@ public class MakeChange {
 	}
 
 	public BigDecimal clearMachineBalance(double currentBalance) {
-
 		currentBalance = 0.00;
 		machineBalance = new BigDecimal(currentBalance);
 		return machineBalance;

@@ -3,11 +3,9 @@ package com.techelevator.view;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Map;
 import com.techelevator.MakeChange;
 import java.util.Scanner;
-import com.techelevator.FileReader;
 import com.techelevator.Selection;
 public class Menu {
 
@@ -82,7 +80,6 @@ public class Menu {
 	public Object getChoiceFromPurchaseOptions(Map<String, Selection> options) {
 
 		Object choice = null;
-		displayPurchaseOptions(options);
 		while(choice == null) {
 			choice = getChoiceFromPurchaseInput(options);
 		}
@@ -91,16 +88,21 @@ public class Menu {
 
 	private Object getChoiceFromPurchaseInput(Map<String, Selection> options){
 		Object choice = null;
+		displayPurchaseOptions(options);
 		String userInput = in.nextLine(); 
 		while(choice == null) { 
 			if(!options.containsKey(userInput)){
 				System.out.println("You mad! Product does not exist.");
 				choice = (String) getToPurchaseMenu();
-			}else if(options.containsKey(userInput) && options.get(userInput).getStock() == 0){
+			}else if(options.containsKey(userInput) && options.get(userInput).getItem().getStock() == 0){
 				System.out.println("Sowi! Product is sold out.");
 				choice = (String) getToPurchaseMenu();
-			} else if(options.containsKey(userInput) && options.get(userInput).getStock() > 0) {
-				options.get(userInput).dispenseItem(options.get(userInput).getStock());
+			} else if (makechange.getMachineBalance().doubleValue() < options.get(userInput).getItem().getPrice().doubleValue()) {
+				System.out.println("Oops, you're poor.");
+				choice = (String) getToPurchaseMenu();
+			} else if(options.containsKey(userInput) && options.get(userInput).getItem().getStock() > 0) {
+				options.get(userInput).getItem().reduceStock();
+				System.out.println(options.get(userInput).getItem().getStock());
 				System.out.println("Here's your " + options.get(userInput).getItem().getName() + " for $" + options.get(userInput).getItem().getPrice());
 				System.out.println(options.get(userInput).getItem().getSound());
 				choice = userInput; 
@@ -137,8 +139,6 @@ public class Menu {
 		return choice;
 	}
 
-
-
 	private void displayPurchaseMenuOptions() {
 		out.println();
 		for (int i = 0; i < PURCHASE_MENU_OPTIONS.length; i++) {
@@ -158,9 +158,8 @@ public class Menu {
 	}
 
 	public void listPurchaseOptions(Map<String, Selection> options) {
-		FileReader listOfItems = new FileReader("vendingmachine.csv");
-		for(Map.Entry<String, Selection> option : listOfItems.createInventoryMap().entrySet()) {
-			System.out.println(option.getKey() + " " + option.getValue().getItem().getName() + " $" + option.getValue().getItem().getPrice() + " Quantity Remaining: " + option.getValue().getStock());
+		for(Map.Entry<String, Selection> option : options.entrySet()) {
+			System.out.println(option.getKey() + " " + option.getValue().getItem().getName() + " $" + option.getValue().getItem().getPrice() + " Quantity Remaining: " + option.getValue().getItem().getStock());
 		}
 	}
 }

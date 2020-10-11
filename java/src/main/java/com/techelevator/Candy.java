@@ -11,6 +11,6 @@ public class Candy extends Item {
 	@Override
 	public String getSound() { //override sound method for candy sound
 		return "Munch Munch, Yum!";
-
 	}
+	
 }

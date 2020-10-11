@@ -1,7 +1,8 @@
 package com.techelevator;
 
 import static org.junit.Assert.assertEquals;
-
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import org.junit.Test;
 
 public class MakeChangeTest {
@@ -32,6 +33,22 @@ public class MakeChangeTest {
 		MakeChange test = new MakeChange();
 		String output = test.dispenseChange(0.15);
 		assertEquals("Your change is: " + 1 + " nickel(s), " + 1 + " dime(s), and " + 0 + " quarter(s).", output);
+	}
+	
+	@Test
+	public void add_money_five_dollars() {
+		MakeChange test = new MakeChange();
+		BigDecimal expected = new BigDecimal(5).setScale(2, RoundingMode.HALF_UP);
+		BigDecimal output = test.addMoney(5.00).setScale(2, RoundingMode.HALF_UP);
+		assertEquals(expected, output);
+	}
+	
+	@Test
+	public void clear_balance_from_five() {
+		MakeChange test = new MakeChange();
+		BigDecimal output = test.clearMachineBalance(5.00);
+		BigDecimal expected = new BigDecimal(0);
+		assertEquals(expected, output);
 	}
 
 }
