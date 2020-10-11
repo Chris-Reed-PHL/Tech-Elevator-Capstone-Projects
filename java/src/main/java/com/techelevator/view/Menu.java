@@ -1,10 +1,9 @@
 package com.techelevator.view;
-
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.Map;
-import com.techelevator.MakeChange;
 import java.util.Scanner;
 import com.techelevator.Selection;
 public class Menu {
@@ -16,7 +15,8 @@ public class Menu {
 
 	private PrintWriter out;
 	private Scanner in;
-	private MakeChange makechange = new MakeChange();
+
+
 
 	public Menu(InputStream input, OutputStream output) {
 		this.out = new PrintWriter(output);
@@ -77,7 +77,7 @@ public class Menu {
 		out.flush();
 	}
 
-	public Object getChoiceFromPurchaseOptions(Map<String, Selection> options) {
+	public Object getChoiceFromPurchaseOptions(Map<String, Selection> options) throws FileNotFoundException {
 
 		Object choice = null;
 		while(choice == null) {
@@ -86,7 +86,7 @@ public class Menu {
 		return choice;
 	}
 
-	private Object getChoiceFromPurchaseInput(Map<String, Selection> options){
+	private Object getChoiceFromPurchaseInput(Map<String, Selection> options) throws FileNotFoundException{
 		Object choice = null;
 		displayPurchaseOptions(options);
 		String userInput = in.nextLine(); 
@@ -97,14 +97,12 @@ public class Menu {
 			}else if(options.containsKey(userInput) && options.get(userInput).getItem().getStock() == 0){
 				System.out.println("Sowi! Product is sold out.");
 				choice = (String) getToPurchaseMenu();
-			} else if (makechange.getMachineBalance().doubleValue() < options.get(userInput).getItem().getPrice().doubleValue()) {
-				System.out.println("Oops, you're poor.");
-				choice = (String) getToPurchaseMenu();
+
 			} else if(options.containsKey(userInput) && options.get(userInput).getItem().getStock() > 0) {
-				options.get(userInput).getItem().reduceStock();
-				System.out.println(options.get(userInput).getItem().getStock());
-				System.out.println("Here's your " + options.get(userInput).getItem().getName() + " for $" + options.get(userInput).getItem().getPrice());
-				System.out.println(options.get(userInput).getItem().getSound());
+
+
+
+
 				choice = userInput; 
 			}
 		}
@@ -159,8 +157,13 @@ public class Menu {
 
 	public void listPurchaseOptions(Map<String, Selection> options) {
 		for(Map.Entry<String, Selection> option : options.entrySet()) {
-			System.out.println(option.getKey() + " " + option.getValue().getItem().getName() + " $" + option.getValue().getItem().getPrice() + " Quantity Remaining: " + option.getValue().getItem().getStock());
+			if(option.getValue().getItem().getStock() == 0) {
+				System.out.println(option.getKey() + " " + option.getValue().getItem().getName() + " $" + option.getValue().getItem().getPrice() +
+						" Quantity Remaining: SOLD OUT");
+			}else {
+				System.out.println(option.getKey() + " " + option.getValue().getItem().getName() + " $" + option.getValue().getItem().getPrice() +
+						" Quantity Remaining: " + option.getValue().getItem().getStock());
+			}
 		}
 	}
 }
-

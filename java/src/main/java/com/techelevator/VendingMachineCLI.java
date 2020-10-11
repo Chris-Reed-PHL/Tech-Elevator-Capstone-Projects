@@ -2,6 +2,8 @@ package com.techelevator;
 import com.techelevator.view.Menu;
 import com.techelevator.MakeChange;
 import com.techelevator.Selection;
+import com.techelevator.Log;
+import java.io.FileNotFoundException;
 import java.util.Map;
 import com.techelevator.MainInventory;
 
@@ -22,7 +24,7 @@ public class VendingMachineCLI {
 	private Menu menu;
 	private MakeChange makechange = new MakeChange();
 	private MainInventory inventory = new MainInventory();
-
+	private Log logger = new Log();
 
 	public VendingMachineCLI(Menu menu, MakeChange makechange, MainInventory inventory) {
 		this.menu = menu;
@@ -31,7 +33,7 @@ public class VendingMachineCLI {
 
 	}
 
-	public void run() {
+	public void run() throws FileNotFoundException {
 		while (true) {
 			String choice = (String) menu.getChoiceFromOptions(MAIN_MENU_OPTIONS);
 			if (choice.equals(MAIN_MENU_OPTION_DISPLAY_ITEMS)) {
@@ -60,13 +62,27 @@ public class VendingMachineCLI {
 							makechange.addMoney(10.00);
 						}
 						System.out.println("Current Money Provided: $" + makechange.getMachineBalance());
+						logger.salesLog("FEED MONEY: $" + makechange.getCurrentBalance() + " $" + makechange.getMachineBalance().doubleValue());
 					} else if (choice.equals(menu.getPurchaseMenuOptionSelectProduct())) {
 						choice = (String) menu.getChoiceFromPurchaseOptions(inventory.getInventoryMap());
-						System.out.println("Your remaining balance is $" + makechange.subtractCost(inventory.getInventoryMap().get(choice).getItem().getPrice()));
+						if(makechange.getCurrentBalance() - inventory.getInventoryMap().get(choice).getItem().getPrice().doubleValue() < 0)
+						{
+							System.out.println("Opps, you poor!");
+						}else {
+							System.out.println("Here's your " + inventory.getInventoryMap().get(choice).getItem().getName() + " for $" +
+									inventory.getInventoryMap().get(choice).getItem().getPrice());
+							System.out.println(inventory.getInventoryMap().get(choice).getItem().getSound());
+							inventory.getInventoryMap().get(choice).getItem().reduceStock();
+
+							System.out.println("Your remaining balance is $" + makechange.subtractCost(inventory.getInventoryMap().get(choice).getItem().getPrice()));
+							logger.salesLog(inventory.getInventoryMap().get(choice).getItem().getName().toString()+ " " + inventory.getInventoryMap().get(choice).getSelectionName() +
+									" $" + inventory.getInventoryMap().get(choice).getItem().getPrice().doubleValue() + " $" + makechange.getMachineBalance().doubleValue());
+						}
 					} else if (choice.equals(menu.getPurchaseMenuOptionFinishTransaction())) {
 						//change dispenses, balance returns to zero
 						System.out.println(makechange.dispenseChange(makechange.getCurrentBalance()));
 						System.out.println("Current Money Provided: $" + makechange.clearMachineBalance(makechange.getCurrentBalance()));
+						logger.salesLog("GIVE CHANGE: $" +  makechange.getCurrentBalance() + " $" + makechange.clearMachineBalance(makechange.getCurrentBalance()).doubleValue());
 						break;
 					}
 				}
@@ -77,7 +93,7 @@ public class VendingMachineCLI {
 		}
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FileNotFoundException {
 		Menu menu = new Menu(System.in, System.out);
 		MakeChange makechange = new MakeChange();
 		MainInventory inventory = new MainInventory();

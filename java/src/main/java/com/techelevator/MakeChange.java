@@ -52,8 +52,12 @@ public class MakeChange {
 	}
 
 	public BigDecimal subtractCost(BigDecimal cost) {
+		if(currentBalance - cost.doubleValue() >= 0) {
 		currentBalance -= cost.doubleValue();
 		machineBalance = new BigDecimal(currentBalance).setScale(2, RoundingMode.HALF_UP);
+		}else {
+			machineBalance = new BigDecimal(currentBalance).setScale(2, RoundingMode.HALF_UP);
+		}
 		return machineBalance;
 	}
 
