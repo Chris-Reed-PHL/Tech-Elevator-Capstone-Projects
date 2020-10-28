@@ -92,17 +92,18 @@ public class Menu {
 		String userInput = in.nextLine(); 
 		while(choice == null) { 
 			if(!options.containsKey(userInput)){
-				System.out.println("You mad! Product does not exist.");
-				choice = (String) getToPurchaseMenu();
+				System.out.println("-------------------------------------------------------");
+				System.out.println("You mad! Product does not exist. Please choose another: ");
+				System.out.println("-------------------------------------------------------");
+				//choice = (String) getToPurchaseMenu(); NullPointerException
+				break;
 			}else if(options.containsKey(userInput) && options.get(userInput).getItem().getStock() == 0){
-				System.out.println("Sowi! Product is sold out.");
-				choice = (String) getToPurchaseMenu();
-
+				System.out.println("----------------------------------------------------");
+				System.out.println("Sowi! Product is sold out. Please choose another: ");
+				System.out.println("----------------------------------------------------");
+				//choice = (String) getToPurchaseMenu(); This led to a NullPointerException
+				break;
 			} else if(options.containsKey(userInput) && options.get(userInput).getItem().getStock() > 0) {
-
-
-
-
 				choice = userInput; 
 			}
 		}
