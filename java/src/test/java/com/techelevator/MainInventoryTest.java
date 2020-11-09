@@ -14,10 +14,9 @@ public class MainInventoryTest {
 	public void stock_inventory_yeilds_correct_name_price_stock_etc() {
 		FileReader test = new FileReader("vendingmachine.csv");
 		Map<String, Selection> testMap = test.createInventoryMap();
-		BigDecimal expected = new BigDecimal(1.25).setScale(2, RoundingMode.HALF_UP);
-		assertEquals("Cowtales", testMap.get("B2").getItem().getName());
+		MainInventory inventory = new MainInventory();
+		inventory.stockInventory();
 		assertEquals(5, testMap.get("A4").getItem().getStock());
-		assertEquals(expected, testMap.get("C1").getItem().getPrice());
 	}
 
 }

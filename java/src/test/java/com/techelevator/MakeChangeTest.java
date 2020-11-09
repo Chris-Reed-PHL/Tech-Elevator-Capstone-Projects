@@ -50,5 +50,14 @@ public class MakeChangeTest {
 		BigDecimal expected = new BigDecimal(0);
 		assertEquals(expected, output);
 	}
+	
+	@Test
+	public void subtractCost_should_return_correct_balance() {
+		MakeChange test = new MakeChange();
+		test.addMoney(2);
+		BigDecimal output = test.subtractCost(BigDecimal.valueOf(1));
+		BigDecimal expected = new BigDecimal(1).setScale(2);
+		assertEquals(expected, output);
+	}
 
 }

@@ -9,7 +9,6 @@ import com.techelevator.MainInventory;
 
 
 public class VendingMachineCLI {
-
 	private static final String MAIN_MENU_OPTION_DISPLAY_ITEMS = "Display Vending Machine Items";
 	private static final String MAIN_MENU_OPTION_PURCHASE = "Purchase";
 	private static final String MAIN_MENU_OPTION_EXIT = "Exit";
@@ -35,6 +34,9 @@ public class VendingMachineCLI {
 
 	public void run() throws FileNotFoundException {
 		while (true) {
+			System.out.println("-----------------------------------");
+			System.out.println("~*~ WELCOME TO VENDING MACHINE ~*~");
+			System.out.println("-----------------------------------");
 			String choice = (String) menu.getChoiceFromOptions(MAIN_MENU_OPTIONS);
 			if (choice.equals(MAIN_MENU_OPTION_DISPLAY_ITEMS)) {
 				// display vending machine items
@@ -61,14 +63,21 @@ public class VendingMachineCLI {
 							//add $10 to customer balance
 							makechange.addMoney(10.00);
 						}
+						System.out.println("-----------------------------------");
 						System.out.println("Current Money Provided: $" + makechange.getMachineBalance());
+						System.out.println("-----------------------------------");
 						logger.salesLog("FEED MONEY: $" + makechange.getCurrentBalance() + " $" + makechange.getMachineBalance().doubleValue());
 					} else if (choice.equals(menu.getPurchaseMenuOptionSelectProduct())) {
 						choice = (String) menu.getChoiceFromPurchaseOptions(inventory.getInventoryMap());
-						if(makechange.getCurrentBalance() - inventory.getInventoryMap().get(choice).getItem().getPrice().doubleValue() < 0)
+						//Adding a clause for if user wants to Select a product after receiving an out of stock message
+						if(inventory.getInventoryMap().get(choice).getItem().getStock() == 0) {
+							break;
+						}
+						else if(makechange.getCurrentBalance() - inventory.getInventoryMap().get(choice).getItem().getPrice().doubleValue() < 0)
 						{
 							System.out.println("Opps, you poor!");
 						}else {
+							System.out.println("---------------------------------------");
 							System.out.println("Here's your " + inventory.getInventoryMap().get(choice).getItem().getName() + " for $" +
 									inventory.getInventoryMap().get(choice).getItem().getPrice());
 							System.out.println(inventory.getInventoryMap().get(choice).getItem().getSound());
@@ -77,17 +86,22 @@ public class VendingMachineCLI {
 							System.out.println("Your remaining balance is $" + makechange.subtractCost(inventory.getInventoryMap().get(choice).getItem().getPrice()));
 							logger.salesLog(inventory.getInventoryMap().get(choice).getItem().getName().toString()+ " " + inventory.getInventoryMap().get(choice).getSelectionName() +
 									" $" + inventory.getInventoryMap().get(choice).getItem().getPrice().doubleValue() + " $" + makechange.getMachineBalance().doubleValue());
-						}
+							System.out.println("---------------------------------------");
+							}
 					} else if (choice.equals(menu.getPurchaseMenuOptionFinishTransaction())) {
 						//change dispenses, balance returns to zero
+						System.out.println("---------------------------------------------------------");
 						System.out.println(makechange.dispenseChange(makechange.getCurrentBalance()));
 						System.out.println("Current Money Provided: $" + makechange.clearMachineBalance(makechange.getCurrentBalance()));
+						System.out.println("---------------------------------------------------------");
 						logger.salesLog("GIVE CHANGE: $" +  makechange.getCurrentBalance() + " $" + makechange.clearMachineBalance(makechange.getCurrentBalance()).doubleValue());
 						break;
 					}
 				}
 			} else if (choice.equals(MAIN_MENU_OPTION_EXIT)) {
+				System.out.println("------------------------");
 				System.out.println("Thank You, Come Again!");
+				System.out.println("------------------------");
 				System.exit(0);
 			}
 		}
